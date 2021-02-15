@@ -5,13 +5,17 @@ import os
 import pandas as pd
 import pathlib
 import argparse
+import csv
 
 
-def xmlparse(fp, tag):
-    for event, element in ET.iterparse(fp):
-        if element.tag == tag:
-            print(element.text)
-
+def xmlparse(location_input, location_output, tag):
+    with open(location_output, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([tag])
+        for event, elem in ET.iterparse(location_input):
+            if elem.tag == tag:
+                writer.writerow([elem.text])
+            elem.clear()
 
 def parseData(element, temp_dict):
     if len(list(element)) != 0:
@@ -61,4 +65,5 @@ if __name__ == "__main__":
         location_output = f'{path}/{location_output}'
 
     #xmlToCSV(location_input, location_output)
-    xmlparse(location_input, tag)
+    
+    xmlparse(location_input, location_output, tag)
