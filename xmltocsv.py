@@ -6,16 +6,21 @@ import pandas as pd
 import pathlib
 import argparse
 import csv
-
+import os
 
 def xmlparse(location_input, location_output, tag):
+    count = 1
     with open(location_output, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([tag])
         for event, elem in ET.iterparse(location_input):
             if elem.tag == tag:
+                os.system('clear')
+                print(count)
+                count += 1
                 writer.writerow([elem.text])
             elem.clear()
+    file.close()
 
 def parseData(element, temp_dict):
     if len(list(element)) != 0:
