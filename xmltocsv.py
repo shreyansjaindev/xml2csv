@@ -8,18 +8,39 @@ import argparse
 import csv
 import os
 
-def xmlparse(location_input, location_output, tag):
+def xmlparse(location_input, location_output, tag, attribute):
     count = 1
     with open(location_output, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([tag])
-        for event, elem in ET.iterparse(location_input):
-            if elem.tag == tag:
-                os.system('clear')
-                print(count)
-                count += 1
-                writer.writerow([elem.text])
-            elem.clear()
+        if tag and not attribute:
+            writer.writerow([tag])
+            for event, elem in ET.iterparse(location_input):
+                if elem.tag == tag:
+                    os.system('clear')
+                    print(count)
+                    count += 1
+                    writer.writerow([elem.text])
+                elem.clear()
+
+        elif attribute and not tag:
+            writer.writerow([attribute])
+            for event, elem in ET.iterparse(location_input):
+                if elem.attrib.get(attribute):
+                    os.system('clear')
+                    print(count)
+                    count += 1
+                    writer.writerow([elem.attrib[attribute]])
+                elem.clear()
+        else:
+            writer.writerow([f'{tag}:{attribute}'])
+            for event, elem in ET.iterparse(location_input):
+                if elem.tag == tag:
+                    if elem.attrib.get(attribute):
+                        os.system('clear')
+                        print(count)
+                        count += 1
+                        writer.writerow([elem.attrib[attribute]])
+                elem.clear()
     file.close()
 
 def parseData(element, temp_dict):
@@ -52,12 +73,14 @@ if __name__ == "__main__":
                         help="XML File Location")
     parser.add_argument('-o', '--output', required=True,
                         help="CSV Output File Location")
-    parser.add_argument('-t', '--tag', required=True, help="Tag Value")
+    parser.add_argument('-t', '--tag', required=True, help="Specify Tag")
+    parser.add_argument('-a', '--attribute', default=False, help="Specify Attribute")
     args = parser.parse_args()
 
     location_input = args.input
     location_output = args.output
     tag = args.tag
+    attribute = args.attribute
 
     if not location_input.lower().endswith('.xml'):
         location_input += '.xml'
@@ -71,4 +94,4 @@ if __name__ == "__main__":
 
     #xmlToCSV(location_input, location_output)
     
-    xmlparse(location_input, location_output, tag)
+    xmlparse(location_input, location_output, tag, attribute)
