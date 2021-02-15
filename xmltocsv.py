@@ -10,36 +10,43 @@ import os
 
 def xmlparse(location_input, location_output, tag, attribute):
     count = 1
+    temp_list = []
     with open(location_output, 'w', newline='') as file:
         writer = csv.writer(file)
         if tag and not attribute:
             writer.writerow([tag])
             for event, elem in ET.iterparse(location_input):
                 if elem.tag == tag:
-                    os.system('clear')
-                    print(count)
-                    count += 1
-                    writer.writerow([elem.text])
+                    value = elem.text
+                    if value not in temp_list:
+                        os.system('clear')
+                        print(count)
+                        count += 1
+                        temp_list.append(value)
+                        writer.writerow([value])
                 elem.clear()
 
         elif attribute and not tag:
             writer.writerow([attribute])
             for event, elem in ET.iterparse(location_input):
-                if elem.attrib.get(attribute):
+                value = elem.attrib.get(attribute)
+                if value and (value not in temp_list):
                     os.system('clear')
                     print(count)
                     count += 1
-                    writer.writerow([elem.attrib[attribute]])
+                    temp_list.append(value)
+                    writer.writerow([value])
                 elem.clear()
         else:
             writer.writerow([f'{tag}:{attribute}'])
             for event, elem in ET.iterparse(location_input):
-                if elem.tag == tag:
-                    if elem.attrib.get(attribute):
-                        os.system('clear')
-                        print(count)
-                        count += 1
-                        writer.writerow([elem.attrib[attribute]])
+                value = elem.attrib.get(attribute)
+                if elem.tag == tag and value and (value not in temp_list):
+                    os.system('clear')
+                    print(count)
+                    count += 1
+                    temp_list.append(value)
+                    writer.writerow([value])
                 elem.clear()
     file.close()
 
