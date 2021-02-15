@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # XML files
-.xml
+*.xml
