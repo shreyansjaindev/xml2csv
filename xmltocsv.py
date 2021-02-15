@@ -80,7 +80,7 @@ if __name__ == "__main__":
                         help="XML File Location")
     parser.add_argument('-o', '--output', required=True,
                         help="CSV Output File Location")
-    parser.add_argument('-t', '--tag', required=True, help="Specify Tag")
+    parser.add_argument('-t', '--tag', default=False, help="Specify Tag")
     parser.add_argument('-a', '--attribute', default=False, help="Specify Attribute")
     args = parser.parse_args()
 
