@@ -80,12 +80,11 @@ if __name__ == "__main__":
                         help="XML File Location")
     parser.add_argument('-o', '--output', required=True,
                         help="CSV Output File Location")
-    parser.add_argument('-f', '--full', action="store_true", default=False, help="Full Conversion (Only works on small-sized XML files)")
+    parser.add_argument('-f', '--full', action="store_true", help="Full Conversion (Only works on small-sized XML files)")
     parser.add_argument('-t', '--tag', default=False, help="Specify Tag")
     parser.add_argument('-a', '--attribute', default=False, help="Specify Attribute")
 
     args = parser.parse_args()
-
     location_input = args.input
     location_output = args.output
     tag = args.tag
