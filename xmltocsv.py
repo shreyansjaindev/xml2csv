@@ -8,7 +8,7 @@ import argparse
 import csv
 import os
 
-def xmlparse(location_input, location_output, tag, attribute):
+def xmlParse(location_input, location_output, tag, attribute):
     count = 1
     temp_list = []
     with open(location_output, 'w', newline='') as file:
@@ -80,8 +80,10 @@ if __name__ == "__main__":
                         help="XML File Location")
     parser.add_argument('-o', '--output', required=True,
                         help="CSV Output File Location")
+    parser.add_argument('-f', '--full', default=False, help="Full Conversion (Only works on small-sized XML files)")
     parser.add_argument('-t', '--tag', default=False, help="Specify Tag")
     parser.add_argument('-a', '--attribute', default=False, help="Specify Attribute")
+
     args = parser.parse_args()
 
     location_input = args.input
@@ -99,6 +101,7 @@ if __name__ == "__main__":
     if '/' not in location_output:
         location_output = f'{path}/{location_output}'
 
-    #xmlToCSV(location_input, location_output)
-    
-    xmlparse(location_input, location_output, tag, attribute)
+    if args.full:
+        xmlToCSV(location_input, location_output)
+    else:
+        xmlParse(location_input, location_output, tag, attribute)
